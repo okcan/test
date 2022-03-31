@@ -1,0 +1,28 @@
+#hello here, before creating this yaml file, first the docker file of the node js application must be created, and then the kubernetes manifest file of this image must be created, then this pipelin must be run, otherwise it will get an error. For example , the image name is specified in the manifest file .
+
+#Note: I am only attaching the yaml file since only the yaml file should be written in this doc.
+
+#This script we wrote allows the application to become a container and deploy it.
+
+#I didn't add the scan commands to the yaml file because I wasn't sure if it was requested to perform a vulnarability scan on Scan.
+
+stages:
+  - build
+  - deploy
+
+buildcontainer:
+  stage: build 
+  script:
+    # Build the image
+    - docker build -t okcan-registry/okcan-application .
+    # Push the image to specific registry
+    - docker push okcan-registry/okcan-application
+
+deployment:
+  stage: deploy # must match the stage name declared above
+  script:
+    # build the kubernetes resources , as I mentioned above , we created a manifest file to Kubernetes cluster.
+    - kubectl apply -f kubernetes_okcan_manifest.yml
+    - kubectl rollout restart deployment/okcan-application
+  environment:
+    name: production
