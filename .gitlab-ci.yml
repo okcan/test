@@ -6,6 +6,8 @@
 
 #I didn't add the scan commands to the yaml file because I wasn't sure if it was requested to perform a vulnarability scan on Scan.
 
+#Codes may have slipped while copy-pasting
+
 stages:
   - build
   - deploy
@@ -19,7 +21,7 @@ buildcontainer:
     - docker push okcan-registry/okcan-application
 
 deployment:
-  stage: deploy # must match the stage name declared above
+  stage: deploy 
   script:
     # build the kubernetes resources , as I mentioned above , we created a manifest file to Kubernetes cluster.
     - kubectl apply -f kubernetes_okcan_manifest.yml
